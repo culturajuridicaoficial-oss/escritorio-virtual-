@@ -23,7 +23,7 @@ const reais = (v: number) => v.toLocaleString("pt-BR", { style: "currency", curr
 export function PaginaDeVendas({
   pagina,
   oferta,
-  cor = "#00C26E",
+  cor = "#D29300",
 }: {
   pagina: CopyDaPagina;
   oferta: OfertaDaPagina;
@@ -94,19 +94,19 @@ export function PaginaDeVendas({
 
 const CSS = `
 .pv { --pv-fundo: #ffffff; --pv-texto: #111111; background: var(--pv-fundo); color: var(--pv-texto);
-  font-family: Inter, system-ui, sans-serif; line-height: 1.6; }
+  font-family: "DM Sans", system-ui, sans-serif; line-height: 1.6; }
 .pv * { box-sizing: border-box; }
-.pv-hero { padding: 64px 20px 56px; text-align: center; background: #0a0a0a; color: #f5f5f3; }
-.pv-hero h1 { font-family: "Space Grotesk", system-ui, sans-serif; font-size: clamp(30px, 6vw, 52px); line-height: 1.1;
+.pv-hero { padding: 64px 20px 56px; text-align: center; background: #0d0d0f; color: #f5f5f3; }
+.pv-hero h1 { font-family: "Plus Jakarta Sans", system-ui, sans-serif; font-size: clamp(30px, 6vw, 52px); line-height: 1.1;
   max-width: 820px; margin: 12px auto; }
 .pv-sub { font-size: clamp(17px, 2.4vw, 21px); max-width: 680px; margin: 0 auto 28px; opacity: 0.85; }
 .pv-selo { display: inline-block; margin: 0; padding: 4px 12px; border: 1px solid var(--pv-cor); color: var(--pv-cor);
   font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; }
-.pv-botao { display: inline-block; padding: 18px 34px; background: var(--pv-cor); color: #0a0a0a; font-weight: 800;
+.pv-botao { display: inline-block; padding: 18px 34px; background: var(--pv-cor); color: #0d0d0f; font-weight: 800;
   font-size: 18px; text-decoration: none; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
 .pv-botao:hover { filter: brightness(1.08); }
 .pv-secao { max-width: 760px; margin: 0 auto; padding: 48px 20px; border-bottom: 1px solid #eee; }
-.pv-secao h2, .pv-oferta h2 { font-family: "Space Grotesk", system-ui, sans-serif; font-size: clamp(24px, 4vw, 34px); line-height: 1.2; }
+.pv-secao h2, .pv-oferta h2 { font-family: "Plus Jakarta Sans", system-ui, sans-serif; font-size: clamp(24px, 4vw, 34px); line-height: 1.2; }
 .pv-secao ul { padding-left: 0; list-style: none; }
 .pv-secao li { padding: 8px 0 8px 32px; position: relative; }
 .pv-secao li::before { content: "✔"; position: absolute; left: 0; color: var(--pv-cor); font-weight: 800; }
@@ -114,7 +114,7 @@ const CSS = `
 .pv-oferta > p { max-width: 640px; margin: 0 auto 16px; }
 .pv-bonus { list-style: none; padding: 0; max-width: 560px; margin: 20px auto; text-align: left; }
 .pv-bonus li { display: flex; flex-direction: column; padding: 12px 16px; margin-bottom: 8px; background: #fff; border-left: 4px solid var(--pv-cor); }
-.pv-preco { font-family: "Space Grotesk", system-ui, sans-serif; font-size: 44px; font-weight: 800; margin: 20px 0 !important; }
+.pv-preco { font-family: "Plus Jakarta Sans", system-ui, sans-serif; font-size: 44px; font-weight: 800; margin: 20px 0 !important; }
 .pv-garantia { margin-top: 18px !important; font-size: 15px; }
 .pv details { border-bottom: 1px solid #eee; padding: 12px 0; }
 .pv summary { font-weight: 700; cursor: pointer; }

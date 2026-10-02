@@ -13,7 +13,7 @@ import {
   type Ponto,
 } from "../escritorio/pixel";
 
-// Recepção do Grupo NKZ: o saguão com o logotipo na parede e uma porta para
+// Recepção da Cultura Jurídica: o saguão com o logotipo na parede e uma porta para
 // cada escritório. Cada venda traz um cliente que atravessa o saguão e entra
 // pela porta do projeto; quando um projeto bate a meta, a recepção comemora.
 
@@ -52,7 +52,7 @@ type Cliente = {
 type Confete = { x: number; y: number; vx: number; vy: number; cor: string; vida: number };
 
 const FALAS_RECEPCAO = [
-  "Bem-vindo ao Grupo NKZ!",
+  "Bem-vindo à Cultura Jurídica!",
   "Escolha um escritório 👆",
   "Os squads estão a todo vapor",
 ];
@@ -72,7 +72,7 @@ export class MotorRecepcao {
   private proximoConfete = 0;
   private ultimoQuadro = 0;
   private escala = 1;
-  private recepcionista = aparencia("recepcao-nkz");
+  private recepcionista = aparencia("recepcao-cultura-juridica");
   private falaRecepcao = FALAS_RECEPCAO[0];
   private falaTemporaria: { texto: string; ate: number } | null = null;
   private proximaFala = 0;
@@ -279,8 +279,8 @@ export class MotorRecepcao {
     const ctx = this.ctx;
     const { w } = MUNDO_RECEPCAO;
     const grad = ctx.createLinearGradient(0, 0, 0, PAREDE_H);
-    grad.addColorStop(0, "#0b0d0c");
-    grad.addColorStop(1, "#141816");
+    grad.addColorStop(0, "#0c0c0e");
+    grad.addColorStop(1, "#161618");
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, w, PAREDE_H);
     // painéis verticais e frisos de luz
@@ -311,8 +311,8 @@ export class MotorRecepcao {
     // luz no chão
     if (destaque) {
       const luz = ctx.createRadialGradient(p.x + p.w / 2, PAREDE_H, 10, p.x + p.w / 2, PAREDE_H, 160);
-      luz.addColorStop(0, "rgba(0,194,110,0.35)");
-      luz.addColorStop(1, "rgba(0,194,110,0)");
+      luz.addColorStop(0, "rgba(210, 147, 0,0.35)");
+      luz.addColorStop(1, "rgba(210, 147, 0,0)");
       ctx.fillStyle = luz;
       ctx.fillRect(p.x - 120, PAREDE_H - 160, p.w + 240, 320);
     }
@@ -321,18 +321,18 @@ export class MotorRecepcao {
     ctx.fillStyle = MARCA.movel;
     ctx.fillRect(p.x - 10, p.y - 10, p.w + 20, p.h + 10);
     // vão (escuro, aparece quando a porta abre)
-    ctx.fillStyle = "#050605";
+    ctx.fillStyle = "#050507";
     ctx.fillRect(p.x, p.y, p.w, p.h);
     // folhas de vidro que deslizam para os lados
     const folha = (p.w / 2) * (1 - aberta * 0.85);
     for (const lado of [0, 1]) {
       const fx = lado === 0 ? p.x : p.x + p.w - folha;
       const vidro = ctx.createLinearGradient(fx, p.y, fx + folha, p.y + p.h);
-      vidro.addColorStop(0, "#1b2420");
-      vidro.addColorStop(1, "#0f1512");
+      vidro.addColorStop(0, "#202022");
+      vidro.addColorStop(1, "#121214");
       ctx.fillStyle = vidro;
       ctx.fillRect(fx, p.y, folha, p.h);
-      ctx.strokeStyle = destaque ? MARCA.verde : "rgba(0,194,110,0.25)";
+      ctx.strokeStyle = destaque ? MARCA.verde : "rgba(210, 147, 0,0.25)";
       ctx.lineWidth = 1.5;
       ctx.strokeRect(fx + 0.5, p.y + 0.5, folha - 1, p.h - 1);
       // reflexo
@@ -355,7 +355,7 @@ export class MotorRecepcao {
     ctx.font = `700 22px ${FONTE_TITULO}`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText("NKZ", p.x + p.w / 2, p.y + 46);
+    ctx.fillText("CJ", p.x + p.w / 2, p.y + 46);
 
     // placa com o nome do projeto
     ctx.font = `700 15px ${FONTE_TITULO}`;
@@ -370,7 +370,7 @@ export class MotorRecepcao {
     ctx.lineWidth = 1.5;
     ctx.stroke();
     // LED: verde aceso se bateu a meta, pulsando quando acabou de vender
-    const led = this.metaBatida.has(p.slug) ? MARCA.verde : brilho ? (Math.floor(agora / 200) % 2 ? MARCA.verdeClaro : MARCA.verde) : "#3a403c";
+    const led = this.metaBatida.has(p.slug) ? MARCA.verde : brilho ? (Math.floor(agora / 200) % 2 ? MARCA.verdeClaro : MARCA.verde) : "#3d3d3f";
     ctx.fillStyle = led;
     ctx.beginPath();
     ctx.arc(px + 14, py + 16, 4, 0, Math.PI * 2);
@@ -394,7 +394,7 @@ export class MotorRecepcao {
     const ctx = this.ctx;
     const { w, h } = MUNDO_RECEPCAO;
     // sofás e plantas
-    ctx.fillStyle = "#26302b";
+    ctx.fillStyle = "#2b2b2d";
     caixa(ctx, 90, 720, 230, 60, 14);
     ctx.fill();
     caixa(ctx, w - 320, 720, 230, 60, 14);
@@ -408,7 +408,7 @@ export class MotorRecepcao {
       desenharPlanta(ctx, x, y);
     }
     // entrada de vidro no rodapé
-    ctx.fillStyle = "rgba(0,194,110,0.5)";
+    ctx.fillStyle = "rgba(210, 147, 0,0.5)";
     ctx.fillRect(w / 2 - 160, h - 6, 320, 3);
   }
 
@@ -427,7 +427,7 @@ export class MotorRecepcao {
     if ("letterSpacing" in ctx) (ctx as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = "4px";
     ctx.fillText("RECEPÇÃO", BALCAO.x + 2, BALCAO.y + 8);
     if ("letterSpacing" in ctx) (ctx as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = "0px";
-    etiqueta(ctx, "Recepção NKZ", BALCAO.x, BALCAO.y + 48);
+    etiqueta(ctx, "Recepção Cultura Jurídica", BALCAO.x, BALCAO.y + 48);
   }
 
   private balao(texto: string, cx: number, base: number, destaque: boolean) {

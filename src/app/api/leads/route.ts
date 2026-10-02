@@ -7,8 +7,8 @@ import { nomeCurto, registrarEvento } from "@/lib/eventos";
 // Formulários das páginas de vendas -> CRM ("Para atender"). Público: as páginas ficam em
 // outros domínios. Exemplo de envio (fetch no submit do formulário):
 //   POST https://<dominio>/api/leads
-//   { "projeto": "doido-por-leilao", "nome": "Ana", "telefone": "(11) 98765-4321",
-//     "email": "ana@email.com", "funil": "DPL-SDP-01", "utm": { "utm_source": "meta" } }
+//   { "projeto": "cultura-juridica", "nome": "Ana", "telefone": "(11) 98765-4321",
+//     "email": "ana@email.com", "funil": "CJ-CUR-01", "utm": { "utm_source": "meta" } }
 // O campo "site" é uma armadilha para robôs: deixe-o escondido e vazio no formulário.
 
 const CORS = {

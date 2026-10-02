@@ -15,7 +15,7 @@ import type { Dados } from "./tipos";
 // Painel do projeto: quadro Kanban com tudo que o time está fazendo, pedidos ao time
 // (com áudio e referências) e o briefing do produto.
 
-const DESTINO_DO_LOGIN = "nkz-painel-destino";
+const DESTINO_DO_LOGIN = "cj-painel-destino";
 type Aba = "quadro" | "pedidos" | "briefing" | "analises";
 
 export function Painel({ slug }: { slug: string }) {

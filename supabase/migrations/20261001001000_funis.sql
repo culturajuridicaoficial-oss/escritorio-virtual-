@@ -3,12 +3,8 @@
 -- dele + tipo + número da peça (ex.: DPL-WKS-01-EST-003; refeita: DPL-WKS-01-EST-003-R1).
 
 alter table projetos add column sigla text unique check (sigla ~ '^[A-Z0-9]{2,5}$');
-update projetos set sigla = case slug
-  when 'doido-por-leilao' then 'DPL'
-  when 'sf-educacao' then 'SFE'
-  when 'vanessa-espansione' then 'VES'
-  else upper(left(regexp_replace(slug, '[^a-z0-9]', '', 'g'), 3))
-end where sigla is null;
+update projetos set sigla = upper(left(regexp_replace(slug, '[^a-z0-9]', '', 'g'), 3))
+where sigla is null;
 
 create table funis (
   id uuid primary key default gen_random_uuid(),
@@ -111,9 +107,8 @@ declare
 begin
   for p in select * from projetos where briefing is not null loop
     f := criar_funil(p.id,
-      case p.slug when 'doido-por-leilao' then 'WKS' when 'sf-educacao' then 'EDU' else 'PRD' end,
-      case p.slug when 'doido-por-leilao' then 'Workshop Lucrando com Veículos de Leilão'
-        when 'sf-educacao' then 'SF Educar · Plataforma de Educação Automotiva' else p.nome end,
+      'PRD',
+      p.nome,
       p.pagina_vendas_url, null);
     update funis set briefing = p.briefing, briefing_atualizado_em = p.briefing_atualizado_em,
       created_at = coalesce(p.briefing_atualizado_em, now()) where id = f.id;

@@ -10,7 +10,7 @@ select cron.schedule(
   '*/15 * * * *',
   $$
   select net.http_post(
-    url := 'https://grupo-nkz.vercel.app/api/cron/comercial',
+    url := 'https://escritorio-cultura-juridica.vercel.app/api/cron/comercial',
     headers := jsonb_build_object(
       'Content-Type', 'application/json',
       'Authorization', 'Bearer ' || (select decrypted_secret from vault.decrypted_secrets where name = 'comercial_cron_secret')

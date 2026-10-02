@@ -1,5 +1,5 @@
 -- Atendimento pelo WhatsApp (Evolution API): uma instância por projeto e os agentes
--- comerciais respondendo. Liga projeto a projeto (começa pelo Doido Por Leilão).
+-- comerciais respondendo. Liga projeto a projeto (começa pela Cultura Jurídica).
 alter table projetos
   add column whatsapp_instancia text unique,          -- nome da instância na Evolution
   add column atendimento_ia boolean not null default false;
@@ -14,4 +14,4 @@ alter table leads
 alter table mensagens_whatsapp add column externo_id text unique;
 
 update projetos set atendimento_ia = true, whatsapp_instancia = coalesce(whatsapp_instancia, slug)
-where slug = 'doido-por-leilao';
+where slug = 'cultura-juridica';

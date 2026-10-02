@@ -1,4 +1,4 @@
--- Grupo NKZ — Fase 1: base de dados da operação de IA
+-- Cultura Jurídica — Fase 1: base de dados da operação de IA
 -- Tudo que os agentes fazem passa por estas tabelas. O escritório virtual
 -- lê apenas `agentes` e `agente_eventos` (via Realtime).
 
@@ -28,7 +28,7 @@ create table funcoes (
 );
 
 create table agentes (
-  id text primary key,                 -- '<slug do projeto>:<função>', ex.: 'sf-educacao:copy-pagina'
+  id text primary key,                 -- '<slug do projeto>:<função>', ex.: 'cultura-juridica:copy-pagina'
   projeto_id uuid not null references projetos(id) on delete cascade,
   funcao_id text not null references funcoes(id),
   nome text not null,                  -- nome do avatar no escritório

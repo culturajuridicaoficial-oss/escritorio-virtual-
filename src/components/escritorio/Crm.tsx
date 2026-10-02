@@ -40,7 +40,7 @@ type Lead = {
 type Mensagem = { id: string; direcao: "entrada" | "saida"; texto: string | null; agente_id: string | null; created_at: string };
 
 const COLUNAS: Array<{ id: Etapa; n: string; titulo: string; dica: string; cor: string }> = [
-  { id: "para_atender", n: "01", titulo: "Para atender", dica: "Cadastrou ou mandou mensagem", cor: "#9aa6a0" },
+  { id: "para_atender", n: "01", titulo: "Para atender", dica: "Cadastrou ou mandou mensagem", cor: "#a0a0a2" },
   { id: "em_atendimento", n: "02", titulo: "Em atendimento", dica: "Um agente de IA está conversando", cor: "var(--verde)" },
   { id: "follow_up", n: "03", titulo: "Follow-ups", dica: "Sem resposta · a cada 2 h, até 4 vezes", cor: "#9db6ff" },
   { id: "aguardando_pagamento", n: "04", titulo: "Aguardando pagamento", dica: "Recebeu o link ou disse que vai comprar", cor: "#ffd37a" },

@@ -1,9 +1,9 @@
-# Grupo NKZ: operação de marketing com squads de IA
+# Cultura Jurídica: operação de marketing com squads de IA
 
 Cada projeto (infoproduto) tem um **squad** de 9 agentes de IA que cria ofertas,
 copys, páginas, anúncios e campanhas, analisa os resultados e atende os leads.
 
-O site é um prédio virtual na identidade do Grupo NKZ:
+O site é um prédio virtual na identidade da Cultura Jurídica (preto, branco e dourado):
 
 - **`/` (recepção):** o saguão com o logotipo e uma porta para cada escritório.
   Cada venda traz um cliente que entra pela porta do projeto; quando um projeto
@@ -36,7 +36,7 @@ O site é um prédio virtual na identidade do Grupo NKZ:
 
 ![Sala Comercial](docs/sala-comercial.png)
 
-Projetos iniciais: **Doido Por Leilão**, **SF Educação** e **Vanessa Espansione**.
+Projeto inicial: **Cultura Jurídica** (`cultura-juridica`, sigla CJ), já com atendimento no WhatsApp.
 
 ## O squad de cada projeto
 
@@ -147,9 +147,9 @@ fechados para o público.
 
 ## Configuração
 
-1. **Supabase.** O projeto `IAs Grupo NKZ` (`fysfyvpbaupvhzfrsees`) já está criado,
-   com as migrações de `supabase/migrations/` e o `supabase/seed.sql` aplicados.
-   Para outro ambiente, rode os arquivos na ordem (SQL Editor ou `supabase db push`).
+1. **Supabase.** Crie um projeto (região São Paulo) e rode as migrações de
+   `supabase/migrations/` na ordem do nome e depois o `supabase/seed.sql`
+   (SQL Editor ou `supabase db push`).
 2. **Projetos.** Em `projetos`, preencha para cada um:
    - `kiwify_produto_ids`: os IDs dos produtos na Kiwify;
    - `meta_ad_account_id`: a conta de anúncios, sem o `act_`;
@@ -171,8 +171,8 @@ fechados para o público.
    preciso o plano Pro.
 
 8. **Painel de aprovação.** No Supabase, em Authentication → URL Configuration,
-   coloque `https://grupo-nkz.vercel.app` em *Site URL* e
-   `https://grupo-nkz.vercel.app/painel` em *Redirect URLs* (o `/painel` só recebe o link
+   coloque `https://escritorio-cultura-juridica.vercel.app` em *Site URL* e
+   `https://escritorio-cultura-juridica.vercel.app/painel` em *Redirect URLs* (o `/painel` só recebe o link
    do e-mail e devolve a pessoa ao painel do projeto de onde ela veio). Depois cadastre quem
    pode aprovar: `insert into equipe (email, nome) values ('voce@exemplo.com', 'Seu nome');`
 

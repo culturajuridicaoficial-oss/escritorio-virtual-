@@ -1,8 +1,6 @@
 -- Projetos iniciais. Depois preencha: kiwify_produto_ids, meta_ad_account_id e limite_gasto_diario.
 insert into projetos (slug, nome, sigla) values
-  ('doido-por-leilao', 'Doido Por Leilão', 'DPL'),
-  ('sf-educacao', 'SF Educação', 'SFE'),
-  ('vanessa-espansione', 'Vanessa Espansione', 'VES')
+  ('cultura-juridica', 'Cultura Jurídica', 'CJ')
 on conflict (slug) do nothing;
 
 -- As funções de um squad (pontos 01 a 12; o 11 é o ciclo entre analista e copy).
@@ -26,14 +24,8 @@ on conflict (id) do nothing;
 
 -- Um squad por projeto. Nomes diferentes em cada squad para identificar no escritório.
 with nomes(slug, ordem, nome) as (
-  select 'doido-por-leilao', ordinality::int, n
+  select 'cultura-juridica', ordinality::int, n
     from unnest(array['Otto','Clara','Caio','Vitor','Paula','Dani','Eva','Teo','Olga','Ana','Lia','Rui','Bia']) with ordinality as n
-  union all
-  select 'sf-educacao', ordinality::int, n
-    from unnest(array['Sofia','Bruno','Lara','Igor','Nina','Hugo','Alice','Davi','Rita','Enzo','Maya','Leo','Iris']) with ordinality as n
-  union all
-  select 'vanessa-espansione', ordinality::int, n
-    from unnest(array['Vera','Murilo','Tais','Gael','Luna','Saulo','Cecilia','Joel','Helena','Pietro','Yara','Raul','Zoe']) with ordinality as n
 ),
 cores(ordem, cor) as (
   select ordinality::int, c
@@ -58,3 +50,8 @@ on conflict (id) do nothing;
 -- Sala de Marketing com 1 agente por time (ver migração 20261001000400).
 update agentes set ativo = false
  where funcao_id in ('copy-pagina', 'copy-estatico', 'copy-video', 'otimizador');
+
+-- Atendimento no WhatsApp ligado desde o início (a instância da Evolution tem o nome do slug).
+-- A migração 20261001001900 faz o mesmo, mas roda antes do seed, quando o projeto ainda não existe.
+update projetos set atendimento_ia = true, whatsapp_instancia = coalesce(whatsapp_instancia, slug)
+ where slug = 'cultura-juridica';

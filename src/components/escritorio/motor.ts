@@ -654,10 +654,10 @@ export class MotorEscritorio {
   /** Faixa de fundo e placa do time no começo da fila. */
   private desenharFila(f: Fila) {
     const ctx = this.ctx;
-    ctx.fillStyle = "rgba(0, 194, 110, 0.035)";
+    ctx.fillStyle = "rgba(210, 147, 0, 0.035)";
     caixa(ctx, f.x, f.y + 6, f.w, CELULA_H - 14, 8);
     ctx.fill();
-    ctx.strokeStyle = "rgba(0, 194, 110, 0.12)";
+    ctx.strokeStyle = "rgba(210, 147, 0, 0.12)";
     ctx.lineWidth = 1;
     ctx.stroke();
 
@@ -683,7 +683,7 @@ export class MotorEscritorio {
   private desenharMesa(a: Avatar, agora: number) {
     const ctx = this.ctx;
     const { x, y } = a.casa;
-    ctx.fillStyle = "#3a403c";
+    ctx.fillStyle = "#3d3d3f";
     caixa(ctx, x - 14, y - 34, 28, 30, 6);
     ctx.fill();
     ctx.fillStyle = MARCA.movel;
@@ -694,7 +694,7 @@ export class MotorEscritorio {
     const trabalhando = agora < a.trabalhandoAte && a.modo === "mesa";
     ctx.fillStyle = MARCA.onix;
     ctx.fillRect(x - 20, y - 100, 40, 26);
-    ctx.fillStyle = trabalhando ? (Math.floor(agora / 250) % 2 ? MARCA.verdeClaro : MARCA.verde) : "#1f2a24";
+    ctx.fillStyle = trabalhando ? (Math.floor(agora / 250) % 2 ? MARCA.verdeClaro : MARCA.verde) : "#242426";
     ctx.fillRect(x - 17, y - 97, 34, 20);
     ctx.fillStyle = MARCA.onix;
     ctx.fillRect(x - 3, y - 74, 6, 4);
@@ -750,7 +750,7 @@ export class MotorEscritorio {
       ctx.stroke();
       ctx.setLineDash([]);
 
-      ctx.fillStyle = "#4a4f4c";
+      ctx.fillStyle = "#4c4c4e";
       ctx.fillRect(sino.x + 40, sino.y - 190, 10, 200);
       ctx.fillRect(sino.x - 10, sino.y - 190, 60, 10);
       const t = (agora - this.sinoTocouEm) / 1000;
@@ -758,7 +758,7 @@ export class MotorEscritorio {
       ctx.save();
       ctx.translate(sino.x, sino.y - 180);
       ctx.rotate(balanco);
-      ctx.fillStyle = "#4a4f4c";
+      ctx.fillStyle = "#4c4c4e";
       ctx.fillRect(-2, 0, 4, 20);
       if (t < 1.5) {
         ctx.shadowColor = MARCA.ouro;
@@ -788,7 +788,7 @@ export class MotorEscritorio {
     ctx.fillRect(cafe.x - 30, cafe.y - 90, 60, 80);
     ctx.fillStyle = MARCA.verde;
     ctx.fillRect(cafe.x - 18, cafe.y - 76, 12, 12);
-    ctx.fillStyle = "#26302b";
+    ctx.fillStyle = "#2b2b2d";
     caixa(ctx, copa.x + 60, copa.y + copa.h - 70, 200, 50, 12);
     ctx.fill();
 

@@ -19,14 +19,10 @@ const FUNCOES: Array<[string, string, string]> = [
   ["analista-meta", "Analista de Meta Ads", "trafego"],
 ];
 const CORES = ["#e5484d", "#8e4ec6", "#3e63dd", "#12a594", "#f76b15", "#d6409f", "#ffc53d",
-  "#0090ff", "#30a46c", "#6e56cf", "#e54666", "#ad7f58", "#46a758", "#f5f5f3", "#5ef0a8"];
+  "#0090ff", "#30a46c", "#6e56cf", "#e54666", "#ad7f58", "#46a758", "#f5f5f3", "#f0c35a"];
 const SQUADS: Array<[string, string, string[]]> = [
-  ["doido-por-leilao", "Doido Por Leilão",
+  ["cultura-juridica", "Cultura Jurídica",
     ["Otto", "Clara", "Caio", "Vitor", "Paula", "Dani", "Eva", "Teo", "Olga", "Ana", "Lia", "Rui", "Bia"]],
-  ["sf-educacao", "SF Educação",
-    ["Sofia", "Bruno", "Lara", "Igor", "Nina", "Hugo", "Alice", "Davi", "Rita", "Enzo", "Maya", "Leo", "Iris"]],
-  ["vanessa-espansione", "Vanessa Espansione",
-    ["Vera", "Murilo", "Tais", "Gael", "Luna", "Saulo", "Cecilia", "Joel", "Helena", "Pietro", "Yara", "Raul", "Zoe"]],
 ];
 
 // Mesmas funções desativadas no banco (1 agente por time na Sala de Marketing).
