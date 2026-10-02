@@ -27,7 +27,7 @@ async function montarEntrada(projeto: Projeto, inicio: string, fim: string): Pro
       .gte("data", inicio)
       .lte("data", fim),
     db
-      .from("vendas")
+      .from("vendas_escritorio")
       .select("status, valor")
       .eq("projeto_id", projeto.id)
       .gte("created_at", `${inicio}T00:00:00Z`)

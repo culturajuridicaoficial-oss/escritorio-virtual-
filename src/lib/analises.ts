@@ -265,7 +265,7 @@ async function metricasSincronizadas(projetoId: string, codigoFunil: string | nu
 async function vendasReais(projetoId: string) {
   const desde = new Date(Date.now() - 60 * 86400000).toISOString();
   const { data } = await supabaseAdmin()
-    .from("vendas")
+    .from("vendas_escritorio")
     .select("valor, status, created_at")
     .eq("projeto_id", projetoId)
     .gte("created_at", desde)

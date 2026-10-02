@@ -30,12 +30,12 @@ export async function POST(req: Request) {
 
   // Se o pedido já estava pago, não toca o sino de novo (a Kiwify reenvia webhooks).
   const { data: anterior } = await db
-    .from("vendas")
+    .from("vendas_escritorio")
     .select("status")
     .eq("kiwify_order_id", pedido.orderId)
     .maybeSingle();
 
-  const { error } = await db.from("vendas").upsert(
+  const { error } = await db.from("vendas_escritorio").upsert(
     {
       kiwify_order_id: pedido.orderId,
       projeto_id: projeto?.id ?? null,

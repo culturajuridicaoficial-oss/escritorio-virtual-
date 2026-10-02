@@ -54,7 +54,7 @@ create table agente_eventos (
 create index on agente_eventos (created_at desc);
 
 -- Vendas e carrinhos (Kiwify) -------------------------------------------------
-create table vendas (
+create table vendas_escritorio ( -- "vendas" já existe no projeto (dashboard)
   id uuid primary key default gen_random_uuid(),
   kiwify_order_id text not null unique,
   projeto_id uuid references projetos(id),
@@ -71,7 +71,7 @@ create table vendas (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
-create index on vendas (projeto_id, created_at desc);
+create index on vendas_escritorio (projeto_id, created_at desc);
 
 -- Leads e conversas de WhatsApp (Z-API) --------------------------------------
 create table leads (
@@ -171,7 +171,7 @@ alter table projetos enable row level security;
 alter table funcoes enable row level security;
 alter table agentes enable row level security;
 alter table agente_eventos enable row level security;
-alter table vendas enable row level security;
+alter table vendas_escritorio enable row level security;
 alter table leads enable row level security;
 alter table mensagens_whatsapp enable row level security;
 alter table ofertas enable row level security;
