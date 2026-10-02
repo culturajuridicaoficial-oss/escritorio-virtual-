@@ -171,8 +171,8 @@ fechados para o público.
    preciso o plano Pro.
 
 8. **Painel de aprovação.** No Supabase, em Authentication → URL Configuration,
-   coloque `https://escritorio-cultura-juridica.vercel.app` em *Site URL* e
-   `https://escritorio-cultura-juridica.vercel.app/painel` em *Redirect URLs* (o `/painel` só recebe o link
+   coloque `https://escritorio-virtual-murex.vercel.app` em *Site URL* e
+   `https://escritorio-virtual-murex.vercel.app/painel` em *Redirect URLs* (o `/painel` só recebe o link
    do e-mail e devolve a pessoa ao painel do projeto de onde ela veio). Depois cadastre quem
    pode aprovar: `insert into equipe (email, nome) values ('voce@exemplo.com', 'Seu nome');`
 
