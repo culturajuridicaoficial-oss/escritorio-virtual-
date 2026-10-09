@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { Session } from "@supabase/supabase-js";
 import { supabaseNavegador } from "@/lib/supabase";
@@ -25,6 +25,8 @@ type Aba = {
 
 const preenchidos = (campos: Campos) => CAMPOS_DO_CONHECIMENTO.filter((c) => campos[c.id]?.trim()).length;
 const linhasPara = (texto = "") => Math.min(16, Math.max(3, texto.split("\n").length + Math.ceil(texto.length / 90)));
+/** O primeiro endereço escrito no campo Links (sugestão para "Ler página de vendas"). */
+const primeiroLink = (campos?: Campos) => campos?.links?.match(/https?:\/\/\S+/)?.[0] ?? "";
 const quando = (iso: string) =>
   new Date(iso).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit", timeZone: "America/Sao_Paulo" });
 
@@ -37,8 +39,14 @@ export function Conhecimento({ slug }: { slug: string }) {
   const [abas, setAbas] = useState<Aba[] | null>(null);
   const [ativa, setAtiva] = useState<string | null>(null);
   const [rascunho, setRascunho] = useState<Campos>({});
+  // O texto mais recente (a leitura da página demora e a pessoa pode seguir digitando).
+  const rascunhoAtual = useRef(rascunho);
+  rascunhoAtual.current = rascunho;
   const [salvando, setSalvando] = useState(false);
   const [aviso, setAviso] = useState<{ tipo: "ok" | "erro"; texto: string } | null>(null);
+  const [urlPagina, setUrlPagina] = useState("");
+  const [substituir, setSubstituir] = useState(false);
+  const [lendo, setLendo] = useState(false);
 
   useEffect(() => {
     if (!db) return setCarregandoSessao(false);
@@ -80,6 +88,7 @@ export function Conhecimento({ slug }: { slug: string }) {
         if (primeira) {
           setAtiva(primeira.id);
           setRascunho(primeira.campos ?? {});
+          setUrlPagina(primeiroLink(primeira.campos));
         }
       })
       .catch((e) => setAviso({ tipo: "erro", texto: e.message }));
@@ -98,10 +107,12 @@ export function Conhecimento({ slug }: { slug: string }) {
 
   const trocarAba = (id: string) => {
     if (id === ativa) return;
+    if (lendo) return alert("Espere a leitura da página terminar: o resultado vai para esta aba.");
     if (alterado && !confirm("Há alterações não salvas nesta aba. Trocar mesmo assim e perder o que não foi salvo?")) return;
     const destino = abas?.find((a) => a.id === id);
     setAtiva(id);
     setRascunho(destino?.campos ?? {});
+    setUrlPagina(primeiroLink(destino?.campos));
     setAviso(null);
   };
 
@@ -126,6 +137,45 @@ export function Conhecimento({ slug }: { slug: string }) {
     }
   }
 
+  /** Lê a página de vendas e coloca o que achou nos campos (sem salvar: a equipe revisa antes). */
+  async function lerPagina() {
+    if (!aba) return;
+    setLendo(true);
+    setAviso(null);
+    try {
+      const { sugestoes }: { sugestoes: Campos } = await api("/api/painel/conhecimento/ler", {
+        method: "POST",
+        body: JSON.stringify({ projeto: slug, id: aba.id, url: urlPagina }),
+      });
+      let novos = 0;
+      let mantidos = 0;
+      const proximo = { ...rascunhoAtual.current };
+      for (const c of CAMPOS_DO_CONHECIMENTO) {
+        const sugestao = sugestoes[c.id]?.trim();
+        if (!sugestao) continue;
+        if (proximo[c.id]?.trim() && !substituir) {
+          mantidos++;
+          continue;
+        }
+        if (proximo[c.id]?.trim() !== sugestao) novos++;
+        proximo[c.id] = sugestao;
+      }
+      setRascunho(proximo);
+      setAviso({
+        tipo: "ok",
+        texto: novos
+          ? `A página preencheu ${novos} campo${novos > 1 ? "s" : ""}${mantidos ? ` (${mantidos > 1 ? `${mantidos} que já tinham texto não mudaram` : "1 que já tinha texto não mudou"})` : ""}. Revise e clique em Salvar: nada vai para a IA antes disso.`
+          : mantidos
+            ? "A página não trouxe nada para os campos vazios. Marque “Substituir o que já está escrito” para trocar pelo texto da página."
+            : "Não encontrei informações nessa página. Confira o endereço.",
+      });
+    } catch (e) {
+      setAviso({ tipo: "erro", texto: (e as Error).message });
+    } finally {
+      setLendo(false);
+    }
+  }
+
   async function novaAba() {
     if (alterado && !confirm("Há alterações não salvas nesta aba. Criar outra aba mesmo assim e perder o que não foi salvo?")) return;
     const nome = prompt("Nome do produto (ex.: Clube Trabalhista)")?.trim();
@@ -135,6 +185,7 @@ export function Conhecimento({ slug }: { slug: string }) {
       setAbas((lista) => [...(lista ?? []), criada]);
       setAtiva(criada.id);
       setRascunho({});
+      setUrlPagina("");
       setAviso(null);
     } catch (e) {
       setAviso({ tipo: "erro", texto: (e as Error).message });
@@ -155,6 +206,7 @@ export function Conhecimento({ slug }: { slug: string }) {
       setAbas(resto);
       setAtiva(resto[0]?.id ?? null);
       setRascunho(resto[0]?.campos ?? {});
+      setUrlPagina(primeiroLink(resto[0]?.campos));
       setAviso({ tipo: "ok", texto: `Aba "${aba.nome}" apagada.` });
     } catch (e) {
       setAviso({ tipo: "erro", texto: (e as Error).message });
@@ -209,7 +261,7 @@ export function Conhecimento({ slug }: { slug: string }) {
             </button>
           ))}
         </div>
-        <button className="painel-botao secundario" onClick={novaAba}>+ Nova aba</button>
+        <button className="painel-botao secundario" onClick={novaAba} disabled={lendo}>+ Nova aba</button>
       </nav>
 
       {aviso && (
@@ -252,6 +304,25 @@ export function Conhecimento({ slug }: { slug: string }) {
           {!aba.usar_na_ia && (
             <p className="painel-aviso">Esta aba está fora da IA: os agentes não leem este produto até você marcar “Usar na IA”.</p>
           )}
+
+          <fieldset className="briefing-bloco conhecimento-pagina">
+            <legend>📄 Preencher pela página de vendas</legend>
+            <p className="painel-suave">
+              Cole o link da página de vendas do {aba.nome}. Um agente lê a página e coloca o que encontrar nos campos abaixo. Leva até 2 minutos.
+              Você revisa e só depois salva.
+            </p>
+            <div className="painel-url">
+              <input type="url" inputMode="url" placeholder="https://www.culturajuridica.com.br/…" value={urlPagina}
+                onChange={(e) => setUrlPagina(e.target.value)} disabled={lendo} aria-label="Link da página de vendas" />
+              <button type="button" className="painel-botao" onClick={lerPagina} disabled={lendo || !/^https?:\/\/\S+\.\S+/.test(urlPagina.trim())}>
+                {lendo ? "⏳ Lendo a página…" : "Ler página de vendas"}
+              </button>
+            </div>
+            <label className="conhecimento-ia conhecimento-substituir">
+              <input type="checkbox" checked={substituir} onChange={(e) => setSubstituir(e.target.checked)} disabled={lendo} />
+              Substituir o que já está escrito (sem marcar, só os campos vazios são preenchidos)
+            </label>
+          </fieldset>
 
           <fieldset className="briefing-bloco">
             <legend>O que a IA precisa saber</legend>
