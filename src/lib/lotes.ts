@@ -3,6 +3,7 @@ import { supabaseAdmin } from "./supabase";
 import { registrarEvento } from "./eventos";
 import { abrirTarefa, agenteAtual, fecharTarefa } from "./tarefas";
 import { claude, explicarErro, lerRespostaDoLote, paramsDoLote } from "./agentes/claude";
+import { conhecimentoParaIA } from "./conhecimento";
 import { chamadaEstatico, chamadaRodada, chamadaVideo, ENTREGA_PADRAO, Peca, PecaEstatica, Rodada, type Entregas } from "./agentes/fabrica";
 import { carregarFunil, falharPeca, prepararProducao, prepararRodada, salvarPeca, salvarRodada } from "./fabrica";
 
@@ -34,7 +35,7 @@ export async function enviarRodadasEmLote(funilIds: string[]) {
     pedidos.push({
       id: `rodada-${funilId}`,
       item: { tipo: "rodada" as const, funilId, entregas: ENTREGA_PADRAO, tarefaId, projetoId: prep.tarefa.projetoId, agenteId: `${prep.tarefa.slug}:ofertas`, titulo },
-      params: paramsDoLote(chamadaRodada(prep.entrada, prep.anexos)),
+      params: paramsDoLote({ ...chamadaRodada(prep.entrada, prep.anexos), conhecimento: await conhecimentoParaIA(prep.tarefa.projetoId) }),
     });
   }
   return pedidos.length ? enviar("rodada", pedidos) : null;
@@ -52,7 +53,7 @@ export async function enviarProducaoEmLote(criativoIds: string[]) {
     pedidos.push({
       id: `peca-${id}`,
       item: { tipo: "peca" as const, criativoId: id, tarefaId, projetoId: prep.projetoId, agenteId: `${prep.slug}:${prep.funcao}`, titulo },
-      params: paramsDoLote(chamada),
+      params: paramsDoLote({ ...chamada, conhecimento: await conhecimentoParaIA(prep.projetoId) }),
     });
   }
   if (!pedidos.length) return null;

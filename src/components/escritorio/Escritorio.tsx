@@ -91,6 +91,7 @@ export function Escritorio({ slug, sala }: { slug?: string; sala?: SalaDoProjeto
           {demo && <em className="selo">demonstração</em>}
           <BotaoSom />
           {slug && <Link href={`/escritorio/${slug}/painel`} className="atalho-painel">📋 Painel do projeto</Link>}
+          {slug && <Link href={`/escritorio/${slug}/conhecimento`} className="atalho-painel secundario">📚 Conhecimento</Link>}
         </div>
         <div className="ticker" aria-live="polite">
           {ultima ? (

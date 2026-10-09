@@ -3,6 +3,7 @@ import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { z } from "zod";
 import { supabaseAdmin } from "../supabase";
 import { agenteAtual } from "../tarefas";
+import { conhecimentoParaIA } from "../conhecimento";
 
 // Chamada padrão dos agentes: resposta estruturada (validada pelo schema), modelo de
 // reserva automático se um classificador recusar e retomada de pausas de ferramentas
@@ -64,6 +65,11 @@ export type Chamada<S extends z.ZodType> = {
    * primeiro e fica no cache, então as peças seguintes do mesmo funil pagam ~5% por ela.
    */
   contexto?: string;
+  /**
+   * Base de conhecimento dos produtos (página Conhecimento). Sem valor, gerarEstruturado busca a
+   * do projeto do agente que está trabalhando; null desliga. Vai antes do contexto, também em cache.
+   */
+  conhecimento?: string | null;
   mensagem: string;
   schema: S;
   /** Padrão "medium". "high" só onde a qualidade da copy depende de raciocinar mais. */
@@ -83,6 +89,7 @@ const CACHE = { type: "ephemeral" } as const;
  */
 function montar(opcoes: Omit<Chamada<z.ZodType>, "schema">, sistema = opcoes.sistema) {
   const fixos: Anthropic.Beta.BetaContentBlockParam[] = [
+    ...(opcoes.conhecimento ? [{ type: "text" as const, text: opcoes.conhecimento, cache_control: CACHE }] : []),
     ...(opcoes.contexto ? [{ type: "text" as const, text: opcoes.contexto }] : []),
     ...(opcoes.anexos ?? []),
   ];
@@ -102,8 +109,15 @@ function montar(opcoes: Omit<Chamada<z.ZodType>, "schema">, sistema = opcoes.sis
   };
 }
 
+/** A base de conhecimento do projeto do agente que está trabalhando agora (null fora de uma tarefa). */
+export async function conhecimentoDoAgente(): Promise<string | null> {
+  const projetoId = agenteAtual.getStore()?.projetoId;
+  return projetoId ? conhecimentoParaIA(projetoId) : null;
+}
+
 export async function gerarEstruturado<S extends z.ZodType>(opcoes: Chamada<S>): Promise<z.infer<S>> {
-  const { system, mensagens, extras } = montar(opcoes);
+  const conhecimento = opcoes.conhecimento !== undefined ? opcoes.conhecimento : await conhecimentoDoAgente();
+  const { system, mensagens, extras } = montar({ ...opcoes, conhecimento });
 
   for (let tentativa = 0; tentativa < 5; tentativa++) {
     const resposta = await claude().beta.messages.parse({

@@ -31,8 +31,8 @@ export const ENTREGA_PADRAO: Entregas = {
 
 const REGRAS_DE_PUBLICIDADE = `Regras obrigatórias (políticas do Meta e Código de Defesa do Consumidor):
 - Nada de promessa de resultado garantido ("ganhe R$ X em Y dias", "garantido", "100% de certeza").
-- Nada de depoimento, número de alunos, resultado ou prova que não esteja no briefing. Não invente dados.
-- Nada de escassez ou urgência falsa (prazos e vagas só se estiverem no briefing).
+- Nada de depoimento, número de alunos, resultado ou prova que não esteja no briefing ou na base de conhecimento dos produtos. Não invente dados.
+- Nada de escassez ou urgência falsa (prazos e vagas só se estiverem no briefing ou na base de conhecimento).
 - Não fale de características pessoais de quem lê ("você está endividado?", "você é gordo?").
 - Antes/depois e alegações de saúde ou renda só com base no briefing e de forma moderada.
 Escreva em português do Brasil, direto, no tom de voz do briefing.`;

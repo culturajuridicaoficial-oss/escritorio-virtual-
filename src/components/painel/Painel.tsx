@@ -342,6 +342,7 @@ export function Painel({ slug }: { slug: string }) {
       )}
     </>,
     <span className="painel-usuario">
+      <Link href={`/escritorio/${slug}/conhecimento`} className="painel-link">📚 Conhecimento</Link>
       {acesso.admin && <Link href="/admin" className="painel-link">⚙ Admin</Link>}
       {acesso.email}
       <button className="painel-link" onClick={() => db.auth.signOut()}>Sair</button>

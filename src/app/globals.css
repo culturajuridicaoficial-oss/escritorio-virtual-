@@ -559,6 +559,7 @@ a { color: inherit; }
   white-space: nowrap;
 }
 .atalho-painel:hover { filter: brightness(1.1); }
+.atalho-painel.secundario { background: transparent; color: var(--verde); border: 1px solid var(--verde); }
 .atalho-painel:focus-visible { outline: 2px solid var(--gelo); outline-offset: 2px; }
 
 /* ---------- pedido ao time ---------- */
@@ -1016,3 +1017,11 @@ button.codigo.copiavel[data-copiado]::after { content: " ✓ copiado"; }
 .crm-ia { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; background: #101012; border: 1px solid #222224; border-radius: 8px; padding: 10px 12px; font-size: 13.5px; }
 .crm-responder { display: flex; gap: 8px; margin-top: 10px; align-items: flex-end; }
 .crm-responder textarea { flex: 1; background: #0e0e10; border: 1px solid #2c2c2e; color: var(--gelo); border-radius: 6px; padding: 8px 10px; font: inherit; resize: vertical; }
+
+/* ------------------------------------------------ base de conhecimento */
+.conhecimento-intro { max-width: 920px; }
+.conhecimento-intro p { max-width: 70ch; line-height: 1.5; }
+.conhecimento-contagem { font-size: 11px; opacity: 0.75; margin-left: 4px; }
+.conhecimento-ok { color: var(--verde-claro); background: rgba(210, 147, 0, 0.08); border: 1px solid var(--borda); padding: 8px 12px; }
+.conhecimento-ia { display: flex; gap: 6px; align-items: center; font-size: 14px; font-weight: 600; cursor: pointer; }
+.conhecimento-ia input { width: auto; accent-color: var(--verde); }
